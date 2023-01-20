@@ -1,0 +1,113 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.5;
+  color: #f7069a;
+  background-color: rgb(230, 228, 228);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.search-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background-color: #999798;
+  box-shadow: rgba(235, 69, 210, 0.04) 0 1px 0, rgba(245, 7, 138, 0.25) 0 1px 0;
+}
+input {
+  border: 1px solid #d3d1d2;
+  border-radius: 3px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0;
+  box-sizing: border-box;
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 300;
+  list-style: none;
+  padding: 5px;
+  margin-right: 20px;
+}
+input:hover {
+  border: 1px solid #f8047e;
+}
+button {
+  background-color: #fafbfc;
+  border: 1px solid #eceaec;
+  border-radius: 3px;
+  //box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  list-style: none;
+  padding: 8px 30px;
+}
+button:hover {
+  background-color: #f7069a;
+  color: white;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 20px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  max-width: calc(100vw - 80px);
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+  margin-top: 60px;
+}
+
+.photo-card img {
+  display: block;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+.info {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  box-shadow: rgba(5, 68, 133, 0.04) 0 1px 0, rgba(247, 2, 153, 0.25) 0 1px 0;
+  //border: 1px solid #f7069a;
+  border-radius: 0 0 3px 0;
+  background-color: white;
+}
+.info-item {
+  display: block;
+  text-align: center;
+  font-size: x-small;
+  text-transform: uppercase;
+  font-weight: 200;
+}
+.span-item {
+  display: block;
+  text-align: center;
+  font-size: small;
+  font-weight: 400;
+  color: rgb(83, 83, 83);
+  //   font-size: smaller;
+}
+.load-more {
+  display: block;
+  margin: 0 auto;
+}
