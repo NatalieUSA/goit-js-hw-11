@@ -23,7 +23,16 @@ console.log(btnLoadMore);
 searchForm.addEventListener('submit', onSearchForm);
 //input.addEventListener('submit', onSearchForm);
 
-const gallerySimpleLightbox = new SimpleLightbox('.gallery a');
+//const gallerySimpleLightbox = new SimpleLightbox('.gallery a');
+const gallerySimpleLightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionPosition: 'bottom',
+  captionDelay: 250,
+  scrollZoomFactor: 2,
+  //   navText: ['*', '*'],
+  overlayOpacity: 0.9,
+  fadeSpeed: 300,
+});
 // const lightbox = new SimpleLightbox('.gallery a', {
 //   captionsData: 'alt',
 //   captionPosition: 'bottom',
@@ -35,44 +44,25 @@ const gallerySimpleLightbox = new SimpleLightbox('.gallery a');
 // });
 let searchRequest = '';
 let page = 1;
-const perPage = 40;
+const perPage = 200;
 btnLoadMore.style.display = 'none';
 
-function onBtnLoadMore() {
-  //   console.log(e);
-  page += 1;
-  btnLoadMore.style.display = 'none';
-  //   gallerySimpleLightbox.destroy();
-  const previousSearchRequest = input.value.trim();
-  console.log(previousSearchRequest);
-
-  getPhoto(previousSearchRequest, page).then(images => {
-    if (previousSearchRequest === '') {
-      return Notiflix.Notify.failure(
-        'Sorry, there are no images matching your search query. Please try again.'
-      );
-    } else {
-      renderMarkupGallery(images.hits);
-      Notiflix.Notify.success(`Hooray! We found ${images.totalHits} images.`);
-      btnLoadMore.style.display = 'block';
-      gallerySimpleLightbox.refresh();
-    }
-  });
-}
-// onBtnLoadMore();
 function onSearchForm(e) {
   e.preventDefault();
   clearGallery();
-  let searchRequest = e.currentTarget.searchQuery.value.trim();
+  const searchRequest = input.value.trim();
+
+  //   const searchRequest = e.currentTarget.searchQuery.value.trim();
   console.log(searchRequest);
   getPhoto(searchRequest, page).then(images => {
-    if (searchRequest === '') {
+    if (searchRequest === '' || images.totalHits === 0) {
       return Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
     } else {
-      renderMarkupGallery(images.hits);
       Notiflix.Notify.success(`Hooray! We found ${images.totalHits} images.`);
+      renderMarkupGallery(images.hits);
+
       btnLoadMore.style.display = 'block';
       gallerySimpleLightbox.refresh();
     }
@@ -80,13 +70,6 @@ function onSearchForm(e) {
 
   //   console.log(searchRequest);
   //   getPhoto(searchRequest);
-}
-console.log(searchRequest);
-
-function clearGallery() {
-  gallery.innerHTML = '';
-  pageNumber = 1;
-  btnLoadMore.style.display = 'none';
 }
 
 async function getPhoto(inputValue, pageNum) {
@@ -101,6 +84,29 @@ async function getPhoto(inputValue, pageNum) {
   } catch (error) {
     console.error(error);
   }
+}
+
+function onBtnLoadMore() {
+  page += 1;
+  btnLoadMore.style.display = 'none';
+  //   gallerySimpleLightbox.destroy();
+  const previousSearchRequest = input.value.trim();
+  console.log(previousSearchRequest);
+
+  getPhoto(previousSearchRequest, page, perPage).then(images => {
+    renderMarkupGallery(images.hits);
+    gallerySimpleLightbox.refresh();
+    const totalPages = Math.ceil(images.totalHits / perPage);
+    console.log(totalPages);
+    console.log(page);
+    if (page === totalPages) {
+      btnLoadMore.style.display = 'none';
+      Notiflix.Notify.success(
+        "We're sorry, but you've reached the end of search results."
+      );
+    }
+  });
+  btnLoadMore.style.display = 'block';
 }
 
 function renderMarkupGallery(arr) {
@@ -138,12 +144,18 @@ function renderMarkupGallery(arr) {
   gallery.insertAdjacentHTML('beforeend', markup);
 }
 
-// const lightbox = new SimpleLightbox('.gallery a', {
-//   captionsData: 'alt',
-//   captionPosition: 'bottom',
-//   captionDelay: 250,
-//   scrollZoomFactor: 2,
-//   //   navText: ['*', '*'],
-//   overlayOpacity: 0.9,
-//   fadeSpeed: 300,
+function clearGallery() {
+  gallery.innerHTML = '';
+  pageNumber = 1;
+  btnLoadMore.style.display = 'none';
+}
+
+//Прокрутка страницы
+// const { height: cardHeight } = document
+//   .querySelector('.gallery')
+//   .firstElementChild.getBoundingClientRect();
+
+// window.scrollBy({
+//   top: cardHeight * 2,
+//   behavior: 'smooth',
 // });
