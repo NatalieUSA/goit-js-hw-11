@@ -26,6 +26,9 @@ li {
 .menu {
   display: flex;
   justify-content: center;
+  margin-top: 50px;
+  text-decoration: none;
+  text-transform: uppercase;
 }
 .search-form {
   position: fixed;
