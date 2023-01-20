@@ -146,7 +146,7 @@ function renderMarkupGallery(arr) {
 
 function clearGallery() {
   gallery.innerHTML = '';
-  pageNumber = 1;
+  page = 1;
   btnLoadMore.style.display = 'none';
 }
 
