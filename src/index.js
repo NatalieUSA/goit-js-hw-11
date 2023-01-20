@@ -74,7 +74,7 @@ function onBtnLoadMore() {
   btnLoadMore.style.display = 'none';
   //   gallerySimpleLightbox.destroy();
   const previousSearchRequest = input.value.trim();
-  console.log(previousSearchRequest);
+  //console.log(previousSearchRequest);
 
   getPhoto(previousSearchRequest, page, perPage).then(images => {
     renderMarkupGallery(images.hits);
@@ -82,7 +82,7 @@ function onBtnLoadMore() {
     const totalPages = Math.ceil(images.totalHits / perPage);
     console.log(totalPages);
     console.log(page);
-    if (page === totalPages) {
+    if (page === totalPages || totalPages === 1) {
       btnLoadMore.style.display = 'none';
       Notiflix.Notify.failure(
         "We're sorry, but you've reached the end of search results."
