@@ -84,7 +84,7 @@ function onBtnLoadMore() {
     console.log(page);
     if (page === totalPages) {
       btnLoadMore.style.display = 'none';
-      Notiflix.Notify.success(
+      Notiflix.Notify.failure(
         "We're sorry, but you've reached the end of search results."
       );
     }
