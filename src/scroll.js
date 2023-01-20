@@ -1,11 +1,12 @@
-import './sass/gallery-style.scss';
+console.log('scroll');
+import './sass/scroll.scss';
 import Notiflix from 'notiflix';
-//console.log(Notiflix);
+// console.log(Notiflix);
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-//console.log(SimpleLightbox);
+// console.log(SimpleLightbox);
 import axios from 'axios';
-//console.log(axios);
+// console.log(axios);
 
 const KEY = '32856813-557b11f28047fc34e33f2f2e2';
 const BASE_URL = 'https://pixabay.com/api/';
@@ -13,9 +14,9 @@ const BASE_URL = 'https://pixabay.com/api/';
 const gallery = document.querySelector('.gallery');
 const input = document.querySelector('input');
 const searchForm = document.querySelector('#search-form');
-const btnLoadMore = document.querySelector('.load-more');
+// const btnLoadMore = document.querySelector('.load-more');
 
-btnLoadMore.addEventListener('click', onBtnLoadMore);
+// btnLoadMore.addEventListener('click', onBtnLoadMore);
 searchForm.addEventListener('submit', onSearchForm);
 
 //const gallerySimpleLightbox = new SimpleLightbox('.gallery a');
@@ -24,6 +25,7 @@ const gallerySimpleLightbox = new SimpleLightbox('.gallery a', {
   captionPosition: 'bottom',
   captionDelay: 250,
   scrollZoomFactor: 2,
+  //   navText: ['*', '*'],
   overlayOpacity: 0.9,
   fadeSpeed: 300,
 });
@@ -31,7 +33,7 @@ const gallerySimpleLightbox = new SimpleLightbox('.gallery a', {
 let searchRequest = '';
 let page = 1;
 const perPage = 40;
-btnLoadMore.style.display = 'none';
+// btnLoadMore.style.display = 'none';
 
 async function getPhoto(inputValue, pageNum) {
   try {
@@ -39,11 +41,15 @@ async function getPhoto(inputValue, pageNum) {
       `${BASE_URL}?key=${KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${pageNum}&per_page=40`
     );
     const images = response.data;
-    //console.log(images.hits);
-    // console.log(images);
+    // console.log(images.hits);
+    console.log(images);
     return await images;
   } catch (error) {
-    console.error(error);
+    // console.error(error);
+    //   throw new Error(console.log(error.message));
+    Notiflix.Notify.failure(
+      "We're sorry, but you've reached the end of search results."
+    );
   }
 }
 
@@ -61,34 +67,34 @@ function onSearchForm(e) {
       Notiflix.Notify.success(`Hooray! We found ${images.totalHits} images.`);
       renderMarkupGallery(images.hits);
 
-      btnLoadMore.style.display = 'block';
+      //   btnLoadMore.style.display = 'block';
       gallerySimpleLightbox.refresh();
     }
   });
 }
 
-function onBtnLoadMore() {
-  page += 1;
-  btnLoadMore.style.display = 'none';
-  //   gallerySimpleLightbox.destroy();
-  const previousSearchRequest = input.value.trim();
-  //console.log(previousSearchRequest);
+// function onBtnLoadMore() {
+//   page += 1;
+//   btnLoadMore.style.display = 'none';
+//   //   gallerySimpleLightbox.destroy();
+//   const previousSearchRequest = input.value.trim();
+//   //console.log(previousSearchRequest);
 
-  getPhoto(previousSearchRequest, page, perPage).then(images => {
-    renderMarkupGallery(images.hits);
-    gallerySimpleLightbox.refresh();
-    const totalPages = Math.ceil(images.totalHits / perPage);
-    console.log(totalPages);
-    console.log(page);
-    if (page === totalPages || totalPages === 1) {
-      btnLoadMore.style.display = 'none';
-      Notiflix.Notify.failure(
-        "We're sorry, but you've reached the end of search results."
-      );
-    }
-  });
-  btnLoadMore.style.display = 'block';
-}
+//   getPhoto(previousSearchRequest, page, perPage).then(images => {
+//     renderMarkupGallery(images.hits);
+//     gallerySimpleLightbox.refresh();
+//     const totalPages = Math.ceil(images.totalHits / perPage);
+//     console.log(totalPages);
+//     console.log(page);
+//     if (page === totalPages || totalPages === 1) {
+//     //   btnLoadMore.style.display = 'none';
+//       Notiflix.Notify.failure(
+//         "We're sorry, but you've reached the end of search results."
+//       );
+//     }
+//   });
+// //   btnLoadMore.style.display = 'block';
+// }
 
 function renderMarkupGallery(arr) {
   const markup = arr
@@ -128,5 +134,31 @@ function renderMarkupGallery(arr) {
 function clearGallery() {
   gallery.innerHTML = '';
   page = 1;
-  btnLoadMore.style.display = 'none';
+  //   btnLoadMore.style.display = 'none';
 }
+
+window.addEventListener('scroll', () => {
+  const documentRect = document.documentElement.getBoundingClientRect();
+  //   console.log('top', documentRect.top);
+  //   console.log('bottom', documentRect.bottom);
+  if (documentRect.bottom < document.documentElement.clientHeight + 150) {
+    console.log('DONE');
+    page += 1;
+    const previousSearchRequest = input.value.trim();
+    //   //console.log(previousSearchRequest);
+
+    getPhoto(previousSearchRequest, page, perPage).then(images => {
+      renderMarkupGallery(images.hits);
+      gallerySimpleLightbox.refresh();
+      const totalPages = Math.ceil(images.totalHits / perPage);
+      console.log(totalPages);
+      console.log(page);
+      if (page === totalPages || totalPages === 1) {
+        //   btnLoadMore.style.display = 'none';
+        Notiflix.Notify.failure(
+          "We're sorry, but you've reached the end of search results."
+        );
+      }
+    });
+  }
+});
