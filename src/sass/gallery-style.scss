@@ -8,7 +8,7 @@ body {
   font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   line-height: 1.5;
-  color: #f7069a;
+  //color: #f7069a;
   background-color: rgb(230, 228, 228);
 }
 
@@ -79,32 +79,48 @@ button:hover {
 
 .photo-card img {
   display: block;
-  width: 100%;
+  width: 350px;
   height: 150px;
   object-fit: cover;
 }
 .info {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
   justify-content: space-evenly;
   width: 100%;
+  height: 50px;
+  margin-bottom: 20px;
   box-shadow: rgba(5, 68, 133, 0.04) 0 1px 0, rgba(247, 2, 153, 0.25) 0 1px 0;
   //border: 1px solid #f7069a;
   border-radius: 0 0 3px 0;
   background-color: white;
+  justify-content: space-evenly;
 }
 .info-item {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+
+  //   // justify-content: center;
+  //   padding: 0 12px;
+  //display: block;
   text-align: center;
   font-size: x-small;
   text-transform: uppercase;
   font-weight: 200;
+}
+b {
+  color: #f7069a;
 }
 .span-item {
   display: block;
   text-align: center;
   font-size: small;
   font-weight: 400;
-  color: rgb(83, 83, 83);
+  color: rgb(51, 51, 51);
   //   font-size: smaller;
 }
 .load-more {

@@ -12,16 +12,12 @@ const KEY = '32856813-557b11f28047fc34e33f2f2e2';
 const BASE_URL = 'https://pixabay.com/api/';
 
 const gallery = document.querySelector('.gallery');
-
 const input = document.querySelector('input');
-// console.log(input);
 const searchForm = document.querySelector('#search-form');
-// console.log(searchForm);
 const btnLoadMore = document.querySelector('.load-more');
+
 btnLoadMore.addEventListener('click', onBtnLoadMore);
-console.log(btnLoadMore);
 searchForm.addEventListener('submit', onSearchForm);
-//input.addEventListener('submit', onSearchForm);
 
 //const gallerySimpleLightbox = new SimpleLightbox('.gallery a');
 const gallerySimpleLightbox = new SimpleLightbox('.gallery a', {
@@ -33,44 +29,11 @@ const gallerySimpleLightbox = new SimpleLightbox('.gallery a', {
   overlayOpacity: 0.9,
   fadeSpeed: 300,
 });
-// const lightbox = new SimpleLightbox('.gallery a', {
-//   captionsData: 'alt',
-//   captionPosition: 'bottom',
-//   captionDelay: 250,
-//   scrollZoomFactor: 2,
-//   //   navText: ['*', '*'],
-//   overlayOpacity: 0.9,
-//   fadeSpeed: 300,
-// });
+
 let searchRequest = '';
 let page = 1;
-const perPage = 200;
+const perPage = 40;
 btnLoadMore.style.display = 'none';
-
-function onSearchForm(e) {
-  e.preventDefault();
-  clearGallery();
-  const searchRequest = input.value.trim();
-
-  //   const searchRequest = e.currentTarget.searchQuery.value.trim();
-  console.log(searchRequest);
-  getPhoto(searchRequest, page).then(images => {
-    if (searchRequest === '' || images.totalHits === 0) {
-      return Notiflix.Notify.failure(
-        'Sorry, there are no images matching your search query. Please try again.'
-      );
-    } else {
-      Notiflix.Notify.success(`Hooray! We found ${images.totalHits} images.`);
-      renderMarkupGallery(images.hits);
-
-      btnLoadMore.style.display = 'block';
-      gallerySimpleLightbox.refresh();
-    }
-  });
-
-  //   console.log(searchRequest);
-  //   getPhoto(searchRequest);
-}
 
 async function getPhoto(inputValue, pageNum) {
   try {
@@ -84,6 +47,26 @@ async function getPhoto(inputValue, pageNum) {
   } catch (error) {
     console.error(error);
   }
+}
+
+function onSearchForm(e) {
+  e.preventDefault();
+  clearGallery();
+  const searchRequest = input.value.trim();
+  //   const searchRequest = e.currentTarget.searchQuery.value.trim();
+  getPhoto(searchRequest, page).then(images => {
+    if (searchRequest === '' || images.totalHits === 0) {
+      return Notiflix.Notify.failure(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+    } else {
+      Notiflix.Notify.success(`Hooray! We found ${images.totalHits} images.`);
+      renderMarkupGallery(images.hits);
+
+      btnLoadMore.style.display = 'block';
+      gallerySimpleLightbox.refresh();
+    }
+  });
 }
 
 function onBtnLoadMore() {
